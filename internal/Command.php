@@ -12,4 +12,8 @@ abstract class Command extends Servlet {
         parent::__construct($name, self::TYPE, $container, self::EXT);
     }
     
+    public function init() {}
+    
+    public abstract function printHelp();
+    
 }

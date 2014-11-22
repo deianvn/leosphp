@@ -34,7 +34,7 @@ abstract class Servlet extends Resource {
         $resourceInfo = $this->getApplication()->locateResource($name, 'page', '.php');
         
         if ($resourceInfo !== false) {
-            $page = new Page($resourceInfo->getName(), $resourceInfo->getType(), $resourceInfo->getContainer(), $resourceInfo->getExtension());
+            $page = new Page($resourceInfo->getName(), $resourceInfo->getContainer());
             $page->loadPageFile();
             exit;
         } else {
@@ -58,7 +58,7 @@ abstract class Servlet extends Resource {
      * @param string $extension
      * @throws ResourceNotFoundException
      */
-    private function useResource($name, $type, $extension = '.php') {
+    public function useResource($name, $type, $extension = '.php') {
         $resourceInfo = $this->getApplication()->locateResource($name, $type, $extension);
         
         if ($resourceInfo !== false) {

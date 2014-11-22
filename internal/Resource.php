@@ -60,7 +60,7 @@ abstract class Resource {
     
     /**
      * 
-     * @return ls\internal\Container
+     * @return \ls\internal\Container
      */
     public function getContainer() {
         return $this->container;
@@ -68,14 +68,10 @@ abstract class Resource {
     
     /**
      * 
-     * @return ls\internal\Application
+     * @return \ls\internal\Application
      */
     public function getApplication() {
-        if ($this->container instanceof Application) {
-            return $this->container;
-        } else {
-            return $this->container->getApplication();
-        }
+        return $this->getContainer()->getApplication();
     }
     
     /**

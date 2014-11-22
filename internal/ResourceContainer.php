@@ -153,15 +153,18 @@ abstract class ResourceContainer extends Container {
      * @param string $extension
      * @return string
      */
-    private function loadResourceTemplate($type, $extension = '.php') {
-        $path = BASE_DIR . 'internal/templates/' . $type . $extension . '.template';
-        $content = file_get_contents($path);
+    private function loadResourceTemplate($type, $extension) {
+        $path = $this->getApplication()->locateResource($type . '.' . $extension . '.template', 'template', '.template');
         
-        if ($content === false) {
-            $content = "\n";
+        if ($path !== false) {
+            $content = file_get_contents($path);
+
+            if ($content !== false) {
+                return $content;
+            }
         }
         
-        return $content;
+        return "\n";
     }
     
 }

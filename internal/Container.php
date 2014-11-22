@@ -6,21 +6,25 @@ abstract class Container {
     
     private $name;
     
-    private $ls;
+    private $application;
     
     public abstract function getPath();
     
-    public function __construct($name, $ls) {
+    public function __construct($name, $application) {
         $this->name = $name;
-        $this->ls = $ls;
+        $this->application = $application;
     }
     
     public function getName() {
         return $this->name;
     }
-
-    public function getLs() {
-        return $this->ls;
+    
+    /**
+     * 
+     * @return \ls\internal\Application
+     */
+    public function getApplication() {
+        return $this->application;
     }
     
     public function isCreated() {

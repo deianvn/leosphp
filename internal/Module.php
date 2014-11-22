@@ -6,12 +6,6 @@ class Module extends ResourceContainer {
     
     /**
      *
-     * @var ls\internal\Application
-     */
-    private $application;
-    
-    /**
-     *
      * @var type 
      */
     private $config;
@@ -23,8 +17,7 @@ class Module extends ResourceContainer {
      * @param type $config
      */
     public function __construct($name, $application, $config = null) {
-        $this->setApplication($application);
-        parent::__construct($name, $application->getLs());
+        parent::__construct($name, $application);
         $this->setConfig($config);
     }
     
@@ -34,14 +27,6 @@ class Module extends ResourceContainer {
      */
     public function getPath() {
         return BASE_DIR . 'modules/' . $this->getName() . '/';
-    }
-    
-    /**
-     * 
-     * @return ls\internal\Application
-     */
-    public function getApplication() {
-        return $this->application;
     }
     
     /**
@@ -60,19 +45,6 @@ class Module extends ResourceContainer {
      */
     public function getConfig($key) {
         return $this->config[$key];
-    }
-    
-    /**
-     * 
-     * @param \ls\internal\Application $application
-     * @throws InvalidArgumentException
-     */
-    private function setApplication($application) {
-        if ($application instanceof Application) {
-            $this->application = $application;
-        } else {
-            throw new \InvalidArgumentException('Valid application must be provided!');
-        }
     }
     
     /**

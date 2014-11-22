@@ -8,6 +8,10 @@ class CliAdapter extends Adapter {
     
     private $commandName;
     
+    private $command;
+    
+    private $commandClass;
+    
     private $locale;
     
     private $args;
@@ -17,7 +21,8 @@ class CliAdapter extends Adapter {
     public function __construct($argv) {
         $this->parseArguments($argv);
         $this->setupApplication();
-        $this->executeCommand();
+        $this->prepareCommand();
+        $this->execute();
     }
     
     public function run() {
@@ -89,16 +94,50 @@ class CliAdapter extends Adapter {
         $this->application->addModule($this->module);
     }
     
-    private function executeCommand() {
+    private function prepareCommand() {
         $resourceInfo = $this->application->locateResource($this->commandName, 'command');
         
         if ($resourceInfo !== false) {
-            if ($this->executeServlet($resourceInfo, $this->args) === true) {
-                return;
+            require $resourceInfo->getPath();
+            $this->commandClass = new \ReflectionClass($resourceInfo->getName());
+            $this->command = $this->commandClass->newInstance($resourceInfo->getName(), $resourceInfo->getContainer());
+            return;
+        }
+        
+        $this->printHelp();
+    }
+    
+    private function execute() {
+        $this->command->init();
+        
+        if ($this->commandClass->hasMethod('execute')) {
+            $commandObjectExecuteMethod = $this->commandClass->getMethod('execute');
+            $reqNumber = $commandObjectExecuteMethod->getNumberOfRequiredParameters();
+            $allNumber = $commandObjectExecuteMethod->getNumberOfParameters();
+            $number = count($this->args);
+            
+            if ($number >= $reqNumber && $number <= $allNumber) {
+                $this->executeCommand($commandObjectExecuteMethod);
+            } else {
+                $this->printCommandHelp();
             }
         }
         
         $this->printHelp();
+    }
+    
+    private function executeCommand($commandObjectExecuteMethod) {
+        try {
+            $commandObjectExecuteMethod->invokeArgs($this->command, $this->args);
+        } catch (\InvocationException $e) {
+            
+        }
+    }
+    
+    private function printCommandHelp() {
+        echo "\n";
+        $this->command->printHelp();
+        echo "\n";
     }
     
     private function printHelp() {

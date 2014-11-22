@@ -2,9 +2,8 @@
 
 class Hello extends ls\internal\Command {
     
-    
-    public function init() {
-        
+    public function printHelp() {
+        $this->page('HelloHelp');
     }
     
     public function execute($msg) {

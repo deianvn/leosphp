@@ -4,6 +4,8 @@ namespace ls\internal;
 
 class Application extends ResourceContainer {
     
+    private $ls;
+    
     private $enabled = false;
     
     private $modules = array();
@@ -20,6 +22,20 @@ class Application extends ResourceContainer {
     
     /**
      * 
+     * @param string $name
+     * @param \ls\internal\LS $ls
+     */
+    public function __construct($name, $ls) {
+        parent::__construct($name, $this);
+        $this->ls = $ls;
+    }
+    
+    public function getLs() {
+        return $this->ls;
+    }
+    
+    /**
+     * 
      * @return string
      */
     public function getPath() {
@@ -31,7 +47,7 @@ class Application extends ResourceContainer {
      * @param stirng $name
      * @param stirng $type
      * @param string $extension
-     * @return ls\internal\ResourceInfo|boolean
+     * @return \ls\internal\ResourceInfo|boolean
      */
     public function locateResource($name, $type, $extension = '.php') {
         if ($this->hasResource($name, $type, $extension)) {
@@ -65,7 +81,7 @@ class Application extends ResourceContainer {
     
     /**
      * 
-     * @return ls\internal\Module[]
+     * @return \ls\internal\Module[]
      */
     public function getModules() {
         return $this->modules;
