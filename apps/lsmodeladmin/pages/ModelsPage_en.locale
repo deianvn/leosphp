@@ -1,0 +1,7 @@
+Title = "Leos Database Center"
+Generate = "Generate"
+CreateTables = "Create Tables"
+AddConstraints = "Add Constraints"
+CleanTables = "Clean Tables"
+CleanFiles = "Clean Files"
+NoModelsAvailable = "No models available"

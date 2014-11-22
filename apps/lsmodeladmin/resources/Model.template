@@ -1,0 +1,49 @@
+<?php
+
+class <name> extends \ls\model\LSModel {
+
+<params>
+
+<constructor>
+    
+    public function setFromArray($data) {
+<setfromarraybody>
+    }
+
+    public function setFromAssoc($data) {
+<setfromassocbody>
+    }
+
+    public function toArray() {
+        $arrayData = array( <toarraybody> );
+        
+        return $arrayData;
+    }
+
+    public function toAssoc() {
+        $assocData = array();
+<toassocbody>
+        
+        return $assocData;
+    }
+    
+    /**
+     * @return <name>Mgr
+     */
+    public function manager() {
+        return <name>Mgr::instance();
+    }
+    
+    public function save() {
+        return $this->manager()->update()->object($this)->submit();
+    }
+    
+<getsetmethods>
+
+    protected function attribute($name) {
+<attributemethodbody>
+    
+        return null;
+    }
+
+}

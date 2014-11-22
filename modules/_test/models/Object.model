@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="Object" table="Objects" engine="InnoDB" charset="UTF8">
+    <parameter name="id" type="INT UNSIGNED" mappedtype="float" publickey="true" autoincrement="true" />
+    <parameter name="Name" type="VARCHAR(32)" notnull="true" />
+</model>

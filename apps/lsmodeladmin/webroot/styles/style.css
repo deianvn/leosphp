@@ -1,0 +1,79 @@
+body {
+    background: white;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table tr {
+    border: 1px solid silver;
+}
+
+td {
+    padding: 5px 10px 5px 10px;
+}
+
+input[type=submit] {
+    color: black;
+    font-weight: bold;
+    font-size: 10px;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.Page {
+    width: 900px;
+    margin: 0 auto;
+}
+
+.ModelsPanel {
+    float: left;
+    width: 900px;
+    margin-bottom: 10px;
+}
+
+.ErrorPanel {
+    width: 900px;
+    float: left;
+}
+
+.TitlePanel {
+    width: 900px;
+    float: left;
+    padding: 7px 0px 7px 0px;
+    border: 1px solid silver;
+    background: orange;
+    text-align: center;
+}
+
+.ModelsTable {
+    width: 900px;
+    float: left;
+    border: 1px solid black;
+}
+
+.ModelCell {
+    width: 150px;
+}
+
+.ActionCell {
+}
+
+.TitleLabel {
+    color: blue;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.InfoLabel {
+    color: black;
+    font-size: 12px;
+}
+
+.ErrorLabel {
+    color: orange;
+    font-size: 12px;
+}

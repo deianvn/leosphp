@@ -1,0 +1,3 @@
+<?php
+
+useLib('DBDriverInit', 'lsmysql');

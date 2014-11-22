@@ -1,0 +1,47 @@
+<?php
+
+class <name>Mgr extends \ls\model\LSModelMgr {
+    
+    private $columns = array( <columns> );
+    
+    /**
+     * @return <name>Mgr
+     */
+    public static function instance() {
+        if (!whas('Manager:<name>Mgr')) {
+            wput('Manager:<name>Mgr', new <name>Mgr());
+        }
+        
+        return wget('Manager:<name>Mgr');
+    }
+    
+    public function __construct() {
+        parent::__construct();
+    }
+
+    public function getTableName() {
+        return '<table>';
+    }
+
+    public function getPublicKeyName() {
+        return '<publickeyname>';
+    }
+    
+    public function columns() {
+        return $this->columns;
+    }
+    
+    /**
+     * @return <name>Factory
+     */
+    public function factory() {
+        return <name>Factory::instance();
+    }
+
+//{CustomCodeBegin}
+
+    <customcode>
+
+//{CustomCodeEnd}
+
+}

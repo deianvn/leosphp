@@ -1,0 +1,3 @@
+<?php
+
+useLib('DBConfig', 'lsmodel');

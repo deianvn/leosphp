@@ -1,0 +1,7 @@
+Title = "Леос Център за бази от данни"
+Generate = "Генерирай"
+CreateTables = "Създай таблиците"
+AddConstraints = "Добави констрейнти"
+CleanTables = "Изчисти таблиците"
+CleanFiles = "Изчисти файловете"
+NoModelsAvailable = "Не са налични модели"

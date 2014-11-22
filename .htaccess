@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteCond $1?%{REQUEST_URI} ([^\?]*)\?(.*)\1$
+    RewriteRule ^(.*)$ - [E=DOCUMENT_SUB:%2]
+    RewriteRule ^(.*)$ - [E=LEOSPHP_URI:$0]
+    RewriteCond %{DOCUMENT_ROOT}%{ENV:DOCUMENT_SUB}cache/resources/%{ENV:LEOSPHP_URI} -f
+    RewriteRule (.*) cache/resources/$1 [END]
+    
+    RewriteCond %{DOCUMENT_ROOT}%{ENV:DOCUMENT_SUB}cache/pages/direct/%{ENV:LEOSPHP_URI} -f
+    RewriteRule (.*) cache/pages/direct/$1 [END]
+
+    RewriteRule ^(.+)$ index.php?lsuri=$1 [QSA,END]
+</IfModule>
+

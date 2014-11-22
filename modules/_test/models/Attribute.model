@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="Attribute" table="Attributes" engine="InnoDB" charset="UTF8">
+    <parameter name="id" type="INT UNSIGNED" mappedtype="float" publickey="true" autoincrement="true" />
+    <parameter name="Name" type="VARCHAR(32)" notnull="true" />
+    <parameter name="ObjectID" type="INT UNSIGNED" notnull="true" mappedtype="float" />
+    <foreignkey name="Attributes_ObjectID_FK" source="ObjectID" target="Objects(id)" onpupdate="CASCADE" ondelete="CASCADE" />
+</model>
