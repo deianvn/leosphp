@@ -19,10 +19,10 @@ class mkapp extends \ls\internal\Command {
         
         if (!$application->isCreated()) {
             if ($application->create(true, $additionalResources) === true) {
-                $this->page('CreatingPageSuccessful', array('name' => $name));
+                $this->page('CreatingApplicationSuccessful', array('name' => $name));
             }
         } else {
-            $this->page('CreatingPageError', array('name' => $name));
+            $this->page('CreatingApplicationError', array('name' => $name));
         }
     }
 
