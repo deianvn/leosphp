@@ -42,7 +42,7 @@ abstract class Container {
     public function delete() {
         if ($this->isCreated()) {
             rrmdir($this->getPath());
-            return $this->isCreated();
+            return !$this->isCreated();
         }
         
         return false;

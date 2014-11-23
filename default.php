@@ -32,5 +32,6 @@ function rrmdir($dir) {
             }
         }
         reset($objects);
+        rmdir($dir); 
     }
 }
