@@ -1,2 +1,0 @@
-ALTER TABLE Attributes
-DROP FOREIGN KEY Attributes_ObjectID_FK;

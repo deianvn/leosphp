@@ -4,7 +4,7 @@ namespace ls\internal;
 
 abstract class ResourceContainer extends Container {
     
-    private $defaultResourceTypes = array('webroot', 'command', 'action', 'scriptlet', 'page', 'pagelet', 'template');
+    private $defaultResourceTypes = array('webroot', 'lib', 'command', 'action', 'scriptlet', 'page', 'pagelet', 'template');
     
     /**
      * 

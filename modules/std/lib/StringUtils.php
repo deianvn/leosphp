@@ -1,6 +1,8 @@
 <?php
 
-class LSStringUtils {
+namespace ls\std;
+
+class StringUtils {
     
     public static function startsWith($haystack, $needle) {
         return !strncmp($haystack, $needle, strlen($needle));
@@ -17,3 +19,4 @@ class LSStringUtils {
     }
 
 }
+
