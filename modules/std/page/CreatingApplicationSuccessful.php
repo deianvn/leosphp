@@ -1,1 +1,1 @@
-Successfully creating page <?php echo $name . "\n";
+Successfully creating application <?php echo $name . "\n";
