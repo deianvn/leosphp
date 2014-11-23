@@ -2,6 +2,6 @@
 
 namespace ls\internal;
 
-class WebAdapter extends Adapter {
+class WebAdapter {
     
 }

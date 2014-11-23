@@ -4,6 +4,24 @@ namespace ls\internal;
 
 abstract class ResourceContainer extends Container {
     
+    private $defaultResourceTypes = array('webroot', 'action', 'scriptlet', 'page'. 'pagelet', 'template');
+    
+    public function create($addDefaultResourceTypes = true, $resourceTypes = array()) {
+        $result = parent::create();
+        
+        if ($addDefaultResourceTypes === true) {
+            $resourceTypes = $resourceTypes === null ? $this->defaultResourceTypes : array_merge($this->defaultResourceTypes, $resourceTypes);
+        }
+        
+        if ($resourceTypes !== null) {
+            foreach ($resourceTypes as $resourceType) {
+                $result = $result && $this->createResourceType($resourceType);
+            }
+        }
+        
+        return $result;
+    }
+    
     /**
      * 
      * @param string $name
