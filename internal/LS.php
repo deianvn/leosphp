@@ -11,6 +11,12 @@ class LS {
     private $localeParameterName = 'Locale';
     
     /**
+     *
+     * @var string 
+     */
+    private $defaultApplicationName;
+    
+    /**
      * 
      * @return string
      */
@@ -24,6 +30,22 @@ class LS {
      */
     public function setLocaleParameterName($localeParameterName) {
         $this->localeParameterName = $localeParameterName;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getDefaultApplicationName() {
+        return $this->defaultApplicationName;
+    }
+
+    /**
+     * 
+     * @param string $defaultApplicationName
+     */
+    public function setDefaultApplicationName($defaultApplicationName) {
+        $this->defaultApplicationName = $defaultApplicationName;
     }
     
     /**
