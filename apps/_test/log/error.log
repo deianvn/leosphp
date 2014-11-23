@@ -1,0 +1,17 @@
+[23/11/14 14:50:33] Library [LSDB] could not be located
+[23/11/14 14:50:33] Library [DBInit] could not be located
+[23/11/14 14:50:33] Library [LSAttribute] could not be located
+[23/11/14 14:50:33] Library [LSModel] could not be located
+[23/11/14 14:50:33] Library [LSModelMgr] could not be located
+[23/11/14 14:50:33] Library [LSModelFactory] could not be located
+[23/11/14 14:50:33] Library [LSSQLFunc] could not be located
+[23/11/14 14:50:33] Library [LSDataConverter] could not be located
+[23/11/14 14:50:33] Library [LSModelMgrMethod] could not be located
+[23/11/14 14:50:33] Library [LSModelMgrCreate] could not be located
+[23/11/14 14:50:33] Library [LSModelMgrGet] could not be located
+[23/11/14 14:50:33] Library [LSModelMgrGetPackage] could not be located
+[23/11/14 14:50:33] Library [LSModelMgrUpdate] could not be located
+[23/11/14 14:50:33] Library [LSModelMgrDelete] could not be located
+[23/11/14 14:50:33] Library [LSTransactionMgr] could not be located
+[23/11/14 14:50:33] Library [DBConfig] could not be located
+[23/11/14 14:50:33] Error selecting db: 

@@ -1,0 +1,5 @@
+[23/11/14 14:50:33] UPDATE Objects SET Name = 'TestObject1' WHERE id = NULL
+[23/11/14 14:50:33] Unsuccessful query:
+UPDATE Objects SET Name = 'TestObject1' WHERE id = NULL
+[23/11/14 14:50:33] SELECT * FROM Objects WHERE Name = 'TestObject1'
+[23/11/14 14:50:33] Unsuccessful query: SELECT * FROM Objects WHERE Name = 'TestObject1'

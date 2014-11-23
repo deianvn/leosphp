@@ -4,8 +4,14 @@ namespace ls\internal;
 
 abstract class ResourceContainer extends Container {
     
-    private $defaultResourceTypes = array('webroot', 'action', 'scriptlet', 'page'. 'pagelet', 'template');
+    private $defaultResourceTypes = array('webroot', 'action', 'scriptlet', 'page', 'pagelet', 'template');
     
+    /**
+     * 
+     * @param boolean $addDefaultResourceTypes
+     * @param string[] $resourceTypes
+     * @return type
+     */
     public function create($addDefaultResourceTypes = true, $resourceTypes = array()) {
         $result = parent::create();
         

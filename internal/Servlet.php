@@ -21,8 +21,8 @@ abstract class Servlet extends Resource {
      * 
      * @param string $name
      */
-    public function scriptlet($name) {
-        $this->useResource($name, 'scriptlet');
+    public function scriptlet($name, $args = null) {
+        $this->useResource($name, 'scriptlet', $args);
     }
     
     /**
@@ -30,11 +30,11 @@ abstract class Servlet extends Resource {
      * @param string $name
      * @throws ResourceNotFoundException
      */
-    public function page($name) {
+    public function page($name, $args = null) {
         $resourceInfo = $this->getApplication()->locateResource($name, 'page', '.php');
         
         if ($resourceInfo !== false) {
-            $page = new Page($resourceInfo->getName(), $resourceInfo->getContainer());
+            $page = new Page($resourceInfo->getName(), $resourceInfo->getContainer(), $args);
             $page->loadPageFile();
             exit;
         } else {
@@ -58,10 +58,15 @@ abstract class Servlet extends Resource {
      * @param string $extension
      * @throws ResourceNotFoundException
      */
-    public function useResource($name, $type, $extension = '.php') {
+    public function useResource($name, $type, $args = null, $extension = '.php') {
         $resourceInfo = $this->getApplication()->locateResource($name, $type, $extension);
         
         if ($resourceInfo !== false) {
+            if ($args === null) {
+                $args = array();
+            }
+            
+            extract($args);
             require $resourceInfo->getPath();
         } else {
             throw new ResourceNotFoundException(ucfirst($type) . ' ' . $name . ' not found');
