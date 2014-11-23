@@ -132,9 +132,7 @@ class CliAdapter extends Adapter {
     }
     
     private function printCommandHelp() {
-        echo "\n";
         $this->command->printHelp();
-        echo "\n";
         exit;
     }
     

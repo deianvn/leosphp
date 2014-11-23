@@ -12,7 +12,7 @@ abstract class ResourceContainer extends Container {
      * @param string[] $resourceTypes
      * @return type
      */
-    public function create($addDefaultResourceTypes = true, $resourceTypes = array()) {
+    public function create($addDefaultResourceTypes = true, $resourceTypes = null) {
         $result = parent::create();
         
         if ($addDefaultResourceTypes === true) {
@@ -34,7 +34,7 @@ abstract class ResourceContainer extends Container {
      * @return boolean
      */
     public function hasResourceType($name) {
-        return file_exists(makeResourceTypePath($name));
+        return file_exists($this->makeResourceTypePath($name));
     }
     
     /**
@@ -43,8 +43,8 @@ abstract class ResourceContainer extends Container {
      * @return boolean
      */
     public function createResourceType($name) {
-        if ($this->isBuilt() && $this->hasResourceFolder($name) === false) {
-            return mkdir(makeResourceTypePath($name));
+        if ($this->isCreated() && $this->hasResourceType($name) === false) {
+            return mkdir($this->makeResourceTypePath($name));
         }
         
         return false;

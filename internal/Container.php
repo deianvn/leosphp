@@ -32,7 +32,7 @@ abstract class Container {
     }
     
     public function create() {
-        if ($this->isBuilt() === false) {
+        if ($this->isCreated() === false) {
             return mkdir($this->getPath());
         }
         
