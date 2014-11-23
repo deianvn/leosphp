@@ -13,12 +13,12 @@ class rmapp extends \ls\internal\Command {
         
         if ($application->isCreated()) {
             if ($application->delete()) {
-                $this->page('DeletingApplicationSuccessful', array('name' => $name));
+                $this->page('Message', array('message' => 'Successfully deleting application ' . $name));
             } else {
-                $this->page('DeletingApplicationError', array('name' => $name));
+                $this->page('Message', array('message' => 'Could not delete application ' . $name));
             }
         } else {
-            $this->page('ApplicationNotFound', array('name' => $name));
+            $this->page('Message', array('message' => 'Application ' . $name . ' not found.'));
         }
     }
     

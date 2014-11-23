@@ -106,42 +106,6 @@ abstract class ResourceContainer extends Container {
      * 
      * @param string $name
      * @param string $type
-     */
-    public function requireResource($name, $type, $extension = '.php') {
-        require $this->makeResourcePath($name, $type, $extension);
-    }
-    
-    /**
-     * 
-     * @param string $name
-     * @param string $type
-     */
-    public function requireOnceResource($name, $type, $extension = '.php') {
-        require_once $this->makeResourcePath($name, $type, $extension);
-    }
-    
-    /**
-     * 
-     * @param string $name
-     * @param string $type
-     */
-    public function includeResource($name, $type, $extension = '.php') {
-        include $this->makeResourcePath($name, $type, $extension);
-    }
-    
-    /**
-     * 
-     * @param string $name
-     * @param string $type
-     */
-    public function includeOnceResource($name, $type, $extension = '.php') {
-        include_once $this->makeResourcePath($name, $type, $extension);
-    }
-    
-    /**
-     * 
-     * @param string $name
-     * @param string $type
      * @return boolean
      */
     public function getResourcePath($name, $type, $extension = '.php') {
@@ -150,6 +114,26 @@ abstract class ResourceContainer extends Container {
         }
         
         return false;
+    }
+    
+    /**
+     * 
+     * @param string $type
+     * @param string $extension
+     * @return string
+     */
+    protected function loadResourceTemplate($type, $extension) {
+        $resourceInfo = $this->getApplication()->locateResource($type . $extension, 'template', '.template');
+        
+        if ($resourceInfo !== false) {
+            $content = file_get_contents($resourceInfo->getPath());
+
+            if ($content !== false) {
+                return $content;
+            }
+        }
+        
+        return "\n";
     }
     
     /**
@@ -169,26 +153,6 @@ abstract class ResourceContainer extends Container {
      */
     private function makeResourcePath($name, $type, $extension = '.php') {
         return $this->makeResourceTypePath($type) . $name . $extension;
-    }
-    
-    /**
-     * 
-     * @param string $type
-     * @param string $extension
-     * @return string
-     */
-    private function loadResourceTemplate($type, $extension) {
-        $path = $this->getApplication()->locateResource($type . '.' . $extension . '.template', 'template', '.template');
-        
-        if ($path !== false) {
-            $content = file_get_contents($path);
-
-            if ($content !== false) {
-                return $content;
-            }
-        }
-        
-        return "\n";
     }
     
 }

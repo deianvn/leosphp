@@ -19,7 +19,7 @@ class help extends \ls\internal\Command {
                 $this->runCommand($resourceInfo);
             }
             
-            $this->page('CommandNotFound', array('command' => $command));
+            $this->page('Message', array('message' => 'Command ' . $command . ' no found.'));
         } else {
             $this->page('GlobalHelp');
         }

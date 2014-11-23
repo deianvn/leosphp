@@ -153,8 +153,8 @@ class Application extends ResourceContainer {
     }
     
     public function createConfigurationFile() {
-        if ($this->isBuilt() && $this->hasConfigurationFile() === false) {
-            return file_put_contents($this->makeConfigurationFilePath(), "<?php\n\n");
+        if ($this->isCreated() && $this->hasConfigurationFile() === false) {
+            return file_put_contents($this->makeConfigurationFilePath(), $this->loadResourceTemplate('config', '.php'));
         }
         
         return false;
@@ -179,8 +179,8 @@ class Application extends ResourceContainer {
     }
     
     public function createAutoIncludeFile() {
-        if ($this->isBuilt() && $this->hasAutoIncludeFile() === false) {
-            return file_put_contents($this->makeAutoIncludeFilePath(), "<?php\n\n");
+        if ($this->isCreated() && $this->hasAutoIncludeFile() === false) {
+            return file_put_contents($this->makeAutoIncludeFilePath(), $this->loadResourceTemplate('autoinclude', '.php'));
         }
         
         return false;

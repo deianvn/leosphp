@@ -18,11 +18,16 @@ class mkapp extends \ls\internal\Command {
         }
         
         if (!$application->isCreated()) {
-            if ($application->create(true, $additionalResources) === true) {
-                $this->page('CreatingApplicationSuccessful', array('name' => $name));
+            $result = $application->create(true, $additionalResources);
+            $application->addModule('std');
+            $result = $result && $application->createAutoIncludeFile();
+            $result = $result && $application->createConfigurationFile();
+            
+            if ($result === true) {
+                $this->page('Message', array('message' => 'Successfully creating application ' . $name));
             }
         } else {
-            $this->page('CreatingApplicationError', array('name' => $name));
+            $this->page('Message', array('message' => 'Could not create application ' . $name));
         }
     }
 
