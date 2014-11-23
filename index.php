@@ -1,7 +1,19 @@
 <?php
 
-namespace ls\core;
+namespace ls\internal;
 
+$uri = trim(filter_input(INPUT_SERVER, 'PATH_INFO'), "/");
+require 'default.php';
+require BASE_DIR . 'internal/WebAdapter.php';
+$adapter = new WebAdapter($uri);
+
+
+
+
+
+exit;
+
+/*
 define('INCLUDE_DIR', getcwd() . DIRECTORY_SEPARATOR);
 require INCLUDE_DIR . 'core/setup.php';
 $uri = '';
@@ -26,3 +38,4 @@ if (file_exists($path . '.cache') && is_file($path . '.cache') && file_exists($p
 }
 
 require INCLUDE_DIR . 'core/LSController.php';
+*/

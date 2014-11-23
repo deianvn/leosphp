@@ -6,7 +6,6 @@ namespace ls\internal;
 if (php_sapi_name() === 'cli') {
     require 'default.php';
     require BASE_DIR . 'internal/CliAdapter.php';
-    require BASE_DIR . 'internal/Command.php';
     $adapter = new CliAdapter($argv);
 } else {
     header("HTTP/1.0 404 Not Found");

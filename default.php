@@ -19,6 +19,11 @@ require BASE_DIR . 'internal/ResourceInfo.php';
 require BASE_DIR . 'internal/Servlet.php';
 require BASE_DIR . 'internal/Page.php';
 require BASE_DIR . 'internal/ResourceNotFoundException.php';
+require BASE_DIR . 'internal/IllegalRouteException.php';
+require BASE_DIR . 'internal/Route.php';
+require BASE_DIR . 'internal/Router.php';
+require BASE_DIR . 'internal/Action.php';
+require BASE_DIR . 'internal/Command.php';
 
 function rrmdir($dir) {
     if (is_dir($dir)) {

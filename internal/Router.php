@@ -13,10 +13,10 @@ class Router {
     private $routes;
     
     public function __construct($ls) {
+        $this->ls = $ls;
         $this->applicationAliases = array();
         $this->actionAliases = array();
         $this->routes = array();
-        $this->loadRoutesFile();
     }
     
     /**
@@ -40,7 +40,7 @@ class Router {
     }
     
     public function route($uri) {
-        return false;
+        
     }
     
     /**
@@ -53,22 +53,14 @@ class Router {
     
     /**
      * 
-     */
-    public function createRoutesFile() {
-        
-    }
-    
-    /**
-     * 
      * @return boolean
      */
-    private function loadRoutesFile() {
+    public function loadRoutesFile() {
         if ($this->hasRoutesFile()) {
             require $this->makeRoutesFilePath();
         }
         
         return false;
-        
     }
     
     /**

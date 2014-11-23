@@ -9,6 +9,6 @@
     RewriteCond %{DOCUMENT_ROOT}%{ENV:DOCUMENT_SUB}cache/pages/direct/%{ENV:LEOSPHP_URI} -f
     RewriteRule (.*) cache/pages/direct/$1 [END]
 
-    RewriteRule ^(.+)$ index.php?lsuri=$1 [QSA,END]
+    RewriteRule ^(.+)$ index.php/$1 [QSA,END]
 </IfModule>
 
