@@ -114,6 +114,7 @@ class CliAdapter extends Adapter {
             
             if ($number >= $reqNumber && $number <= $allNumber) {
                 $this->executeCommand($commandObjectExecuteMethod);
+                exit;
             } else {
                 $this->printCommandHelp();
             }
@@ -134,6 +135,7 @@ class CliAdapter extends Adapter {
         echo "\n";
         $this->command->printHelp();
         echo "\n";
+        exit;
     }
     
     private function printHelp() {
