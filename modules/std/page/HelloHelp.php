@@ -1,4 +1,0 @@
-Usage:
-
-  std:Help message
-
