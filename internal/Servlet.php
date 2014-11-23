@@ -44,10 +44,10 @@ abstract class Servlet extends Resource {
     
     /**
      * 
-     * @param string $scriptletName
-     * @param string $moduleName
+     * @param type $name
+     * @param type $scriptletName.
      */
-    public function registerOperation($scriptletName, $moduleName = null) {
+    public function attachOperation($name, $scriptletName) {
         
     }
     

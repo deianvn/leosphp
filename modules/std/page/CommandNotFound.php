@@ -1,1 +1,1 @@
-    Command <?php echo $command; ?> not found!
+Command <?php echo $command; ?> not found!

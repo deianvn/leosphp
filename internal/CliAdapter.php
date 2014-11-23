@@ -25,10 +25,6 @@ class CliAdapter extends Adapter {
         $this->execute();
     }
     
-    public function run() {
-        
-    }
-    
     private function parseArguments($argv) {
         $this->args = array();
         $i = 1;
@@ -98,7 +94,7 @@ class CliAdapter extends Adapter {
         $resourceInfo = $this->application->locateResource($this->commandName, 'command');
         
         if ($resourceInfo !== false) {
-            require $resourceInfo->getPath();
+            require_once $resourceInfo->getPath();
             $this->commandClass = new \ReflectionClass($resourceInfo->getName());
             $this->command = $this->commandClass->newInstance($resourceInfo->getName(), $resourceInfo->getContainer());
             return;
@@ -141,7 +137,8 @@ class CliAdapter extends Adapter {
     }
     
     private function printHelp() {
-        echo "\nHelp\n\n";
+        $args = array('run', 'std:help');
+        new CliAdapter($args);
         exit;
     }
     
