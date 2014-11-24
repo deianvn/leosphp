@@ -5,6 +5,28 @@ namespace ls\internal;
 abstract class Servlet extends Resource {
     
     /**
+     *
+     * @var type 
+     */
+    private $attachedOperations = array();
+    
+    /**
+     * 
+     * @param type $method
+     * @param type $args
+     * @return type
+     */
+    public function __call($method, $args) {
+        if (!isset($this->$method)) {
+            if (isset($this->attachedOperations[$method])) {
+                return $this->scriptlet($this->attachedOperations[$method]);
+            }
+        } else {
+            return parent::__call($method, $args);
+        }
+    }
+    
+    /**
      * 
      */
     public abstract function init();
@@ -22,7 +44,7 @@ abstract class Servlet extends Resource {
      * @param string $name
      */
     public function scriptlet($name, $args = null) {
-        $this->useResource($name, 'scriptlet', $args);
+        return $this->useResource($name, 'scriptlet', $args);
     }
     
     /**
@@ -45,10 +67,10 @@ abstract class Servlet extends Resource {
     /**
      * 
      * @param type $name
-     * @param type $scriptletName.
+     * @param type $scriptletName
      */
     public function attachOperation($name, $scriptletName) {
-        
+        $this->attachedOperations[$name] = $scriptletName;
     }
     
     /**
@@ -67,7 +89,7 @@ abstract class Servlet extends Resource {
             }
             
             extract($args);
-            require $resourceInfo->getPath();
+            return (require $resourceInfo->getPath());
         } else {
             throw new ResourceNotFoundException(ucfirst($type) . ' ' . $name . ' not found');
         }
