@@ -161,12 +161,12 @@ class Application extends ResourceContainer {
     }
 
     public function loadConfigurationFile() {
-        if ($this->hasConfiguration()) {
+        if ($this->hasConfigurationFile()) {
             require $this->makeConfigurationFilePath();
         }
     }
     
-    public function deleteConfiguration() {
+    public function deleteConfigurationFile() {
         if ($this->hasConfigurationFile()) {
             return unlink($this->makeConfigurationFilePath());
         }

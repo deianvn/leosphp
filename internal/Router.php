@@ -10,13 +10,13 @@ class Router {
     
     private $actionAliases;
     
-    private $routes;
+    private $patterns;
     
     public function __construct($ls) {
         $this->ls = $ls;
         $this->applicationAliases = array();
         $this->actionAliases = array();
-        $this->routes = array();
+        $this->patterns = array();
     }
     
     /**
@@ -35,12 +35,12 @@ class Router {
         $this->actionAliases[$action] = $alias;
     }
     
-    public function addRoute($route, $target) {
-        $this->routes[$route] = $target;
+    public function rewrite($pattern, $target) {
+        $this->patterns[$pattern] = $target;
     }
     
     public function route($uri) {
-        
+        return $uri;
     }
     
     /**

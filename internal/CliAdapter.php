@@ -2,7 +2,7 @@
 
 namespace ls\internal;
 
-class CliAdapter extends Adapter {
+class CliAdapter {
     
     private $module;
     

@@ -6,6 +6,12 @@ class LS {
     
     /**
      *
+     * @var \ls\internal\Request 
+     */
+    private $request;
+    
+    /**
+     *
      * @var string 
      */
     private $localeParameterName = 'Locale';
@@ -15,6 +21,22 @@ class LS {
      * @var string 
      */
     private $defaultApplicationName;
+    
+    /**
+     * 
+     * @return \ls\internal\Request
+     */
+    public function getRequest() {
+        return $this->request;
+    }
+    
+    /**
+     * 
+     * @param \ls\internal\Request $request
+     */
+    public function setRequest(\ls\internal\Request $request) {
+        $this->request = $request;
+    }
     
     /**
      * 
