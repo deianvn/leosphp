@@ -25,7 +25,7 @@ class Operation {
     }
 
     public function getArgs() {
-        return $this->Args;
+        return $this->args;
     }
     
 }

@@ -97,6 +97,7 @@ class CliAdapter {
             require_once $resourceInfo->getPath();
             $this->commandClass = new \ReflectionClass($resourceInfo->getName());
             $this->command = $this->commandClass->newInstance($resourceInfo->getName(), $resourceInfo->getContainer());
+            $this->command->loadAutoIncludeFile();
             return;
         }
         

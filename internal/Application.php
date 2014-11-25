@@ -186,10 +186,12 @@ class Application extends ResourceContainer {
         return false;
     }
     
-    public function loadAutoIncludeFile() {
+    public function getAutoIncludeFilePath() {
         if ($this->hasAutoIncludeFile()) {
-            require $this->makeAutoIncludeFilePath();
+            return $this->makeAutoIncludeFilePath();
         }
+        
+        return false;
     }
     
     public function deleteAutoIncludeFile() {

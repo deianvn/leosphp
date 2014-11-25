@@ -109,7 +109,6 @@ class WebAdapter {
     private function createApplciation($applicationName) {
         $application = new Application($applicationName, $this->ls);
         $application->loadConfigurationFile();
-        $application->loadAutoIncludeFile();
         
         return $application;
     }
@@ -138,7 +137,7 @@ class WebAdapter {
         }
         
         $action = $this->createAction($resourceInfo);
-        
+        $action->loadAutoIncludeFile();
         return $action;
     }
     

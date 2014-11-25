@@ -20,22 +20,14 @@ abstract class Servlet extends Resource {
         if (!isset($this->$method) && isset($this->attachedOperations[$method])) {
             $operation = $this->attachedOperations[$method];
             $scriptletArgs = array();
-            $keys = array_keys($args);
             $i = 0;
             
             foreach ($operation->getArgs() as $argKey => $argValue) {
-                if (is_int($argKey)) {
-                    $scriptletArgs[] = $args[$i];
-                } else if (!isset()) {
-                    throw new BadMethodCallException();
-                } else {
-                    $scriptletArgs[] = $argValue;
-                }
-                
+                $this->setOperationArgument($argKey, $argValue, $args, $i, $scriptletArgs);
                 $i++;
             }
             
-            return $this->scriptlet($operation->getScriptletName());
+            return $this->scriptlet($operation->getScriptletName(), $scriptletArgs);
         }
         
         return parent::__call($method, $args);
@@ -109,6 +101,51 @@ abstract class Servlet extends Resource {
         } else {
             throw new ResourceNotFoundException(ucfirst($type) . ' ' . $name . ' not found');
         }
+    }
+    
+    /**
+     * 
+     */
+    public function loadAutoIncludeFile() {
+        $path = $this->getApplication()->getAutoIncludeFilePath();
+        
+        if ($path !== false) {
+            require $path;
+        }
+    }
+    
+    /**
+     * 
+     * @param string $argKey
+     * @param string $argValue
+     * @param array $args
+     * @param int $i
+     * @param array $scriptletArgs
+     * @throws \BadMethodCallException
+     */
+    private function setOperationArgument($argKey, $argValue, $args, $i, &$scriptletArgs) {
+        $key = null;
+        $value = null;
+
+        if (is_int($argKey)) {
+            $key = $argValue;
+
+            if (array_key_exists($i, $args)) {
+                $value = $args[$i];
+            } else {
+                throw new \BadMethodCallException();
+            }
+        } else {
+            $key = $argKey;
+
+            if (array_key_exists($i, $args)) {
+                $value = $args[$i];
+            } else {
+                $value = $argValue;
+            }
+        }
+
+        $scriptletArgs[$key] = $value;
     }
     
 }
