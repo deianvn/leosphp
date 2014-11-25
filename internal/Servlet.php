@@ -17,13 +17,11 @@ abstract class Servlet extends Resource {
      * @return type
      */
     public function __call($method, $args) {
-        if (!isset($this->$method)) {
-            if (isset($this->attachedOperations[$method])) {
-                return $this->scriptlet($this->attachedOperations[$method]);
-            }
-        } else {
-            return parent::__call($method, $args);
+        if (!isset($this->$method) && isset($this->attachedOperations[$method])) {
+            return $this->scriptlet($this->attachedOperations[$method]);
         }
+        
+        return parent::__call($method, $args);
     }
     
     /**
