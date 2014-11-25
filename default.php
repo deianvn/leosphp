@@ -15,6 +15,7 @@ require BASE_DIR . 'internal/Application.php';
 require BASE_DIR . 'internal/Module.php';
 require BASE_DIR . 'internal/Resource.php';
 require BASE_DIR . 'internal/ResourceInfo.php';
+require BASE_DIR . 'internal/Operation.php';
 require BASE_DIR . 'internal/Servlet.php';
 require BASE_DIR . 'internal/Page.php';
 require BASE_DIR . 'internal/ResourceNotFoundException.php';

@@ -18,7 +18,24 @@ abstract class Servlet extends Resource {
      */
     public function __call($method, $args) {
         if (!isset($this->$method) && isset($this->attachedOperations[$method])) {
-            return $this->scriptlet($this->attachedOperations[$method]);
+            $operation = $this->attachedOperations[$method];
+            $scriptletArgs = array();
+            $keys = array_keys($args);
+            $i = 0;
+            
+            foreach ($operation->getArgs() as $argKey => $argValue) {
+                if (is_int($argKey)) {
+                    $scriptletArgs[] = $args[$i];
+                } else if (!isset()) {
+                    throw new BadMethodCallException();
+                } else {
+                    $scriptletArgs[] = $argValue;
+                }
+                
+                $i++;
+            }
+            
+            return $this->scriptlet($operation->getScriptletName());
         }
         
         return parent::__call($method, $args);
@@ -67,8 +84,9 @@ abstract class Servlet extends Resource {
      * @param type $name
      * @param type $scriptletName
      */
-    public function attachOperation($name, $scriptletName) {
-        $this->attachedOperations[$name] = $scriptletName;
+    public function attachOperation($name, $scriptletName, $args = null) {
+        $operation = new Operation($name, $scriptletName, $args);
+        $this->attachedOperations[$name] = $operation;
     }
     
     /**
