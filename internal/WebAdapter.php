@@ -54,6 +54,11 @@ class WebAdapter {
         try {
             $application = $this->getApplication($applicationName);
             $action = $this->getAction($actionName, $application);
+            
+            if (count($parameters) === 0) {
+                $parameters = $application->getDefaultActionParameters();
+            }
+            
             $this->request = new Request($application, $action, $parameters);
         } catch (\Exception $e) {
             header("HTTP/1.0 404 Not Found");

@@ -116,12 +116,20 @@ class Application extends ResourceContainer {
     }
     
     
-    function getDefaultActionName() {
+    public function getDefaultActionName() {
         return $this->defaultActionName;
     }
     
-    function setDefaultActionName($defaultActionName) {
+    public function setDefaultActionName($defaultActionName) {
         $this->defaultActionName = $defaultActionName;
+    }
+    
+    public function setDefaultActionParameters($defaultActionParameters) {
+        $this->defaultActionParameters = $defaultActionParameters;
+    }
+    
+    public function getDefaultActionParameters() {
+        return $this->defaultActionParameters;
     }
     
     public function isLocalizationEnabled() {
