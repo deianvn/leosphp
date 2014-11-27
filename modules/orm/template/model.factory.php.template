@@ -1,0 +1,24 @@
+<?php
+
+class <name>Factory extends \ls\model\LSModelFactory {
+    
+    /**
+     * @return <name>Factory
+     */
+    public static function instance() {
+        if (!whas('Factory:<name>Factory')) {
+            wput('Factory:<name>Factory', new <name>Factory());
+        }
+        
+        return wget('Factory:<name>Factory');
+    }
+    
+    public function __construct() {
+        parent::__construct();
+    }
+    
+    public function createObject() {
+        return new <name>();
+    }
+
+}

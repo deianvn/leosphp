@@ -40,23 +40,47 @@ abstract class Servlet extends Resource {
     
     /**
      * 
-     * @param string $name
+     * @param type $name
+     * @throws ResourceNotFoundException
      */
     public function useLib($name) {
-        $this->useResource($name, 'lib');
+        $type = 'lib';
+        $resourceInfo = $this->getApplication()->locateResource($name, $type);
+        
+        if ($resourceInfo !== false) {
+            require_once $resourceInfo->getPath();
+        } else {
+            throw new ResourceNotFoundException(ucfirst($type) . ' ' . $name . ' not found');
+        }
     }
     
     /**
      * 
-     * @param string $name
+     * @param type $name
+     * @param array $args
+     * @return type
+     * @throws ResourceNotFoundException
      */
     public function scriptlet($name, $args = null) {
-        return $this->useResource($name, 'scriptlet', $args);
+        $type = 'scriptlet';
+        $resourceInfo = $this->getApplication()->locateResource($name, $type);
+        
+        if ($resourceInfo !== false) {
+            if ($args === null) {
+                $args = array();
+            }
+            
+            extract($args);
+            return (require $resourceInfo->getPath());
+        } else {
+            throw new ResourceNotFoundException(ucfirst($type) . ' ' . $name . ' not found');
+        }
     }
     
     /**
      * 
-     * @param string $name
+     * @param type $name
+     * @param type $args
      * @throws ResourceNotFoundException
      */
     public function page($name, $args = null) {
@@ -75,32 +99,11 @@ abstract class Servlet extends Resource {
      * 
      * @param type $name
      * @param type $scriptletName
+     * @param type $args
      */
     public function attachOperation($name, $scriptletName, $args = null) {
         $operation = new Operation($name, $scriptletName, $args);
         $this->attachedOperations[$name] = $operation;
-    }
-    
-    /**
-     * 
-     * @param string $name
-     * @param string $type
-     * @param string $extension
-     * @throws ResourceNotFoundException
-     */
-    public function useResource($name, $type, $args = null, $extension = '.php') {
-        $resourceInfo = $this->getApplication()->locateResource($name, $type, $extension);
-        
-        if ($resourceInfo !== false) {
-            if ($args === null) {
-                $args = array();
-            }
-            
-            extract($args);
-            return (require $resourceInfo->getPath());
-        } else {
-            throw new ResourceNotFoundException(ucfirst($type) . ' ' . $name . ' not found');
-        }
     }
     
     /**
