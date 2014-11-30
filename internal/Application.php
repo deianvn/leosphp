@@ -4,6 +4,10 @@ namespace ls\internal;
 
 class Application extends ResourceContainer {
     
+    /**
+     *
+     * @var \ls\internal\LS 
+     */
     private $ls;
     
     private $enabled = false;
@@ -30,6 +34,10 @@ class Application extends ResourceContainer {
         $this->ls = $ls;
     }
     
+    /**
+     * 
+     * @return \ls\internal\LS
+     */
     public function getLs() {
         return $this->ls;
     }

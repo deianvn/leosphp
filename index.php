@@ -7,12 +7,6 @@ require 'default.php';
 require BASE_DIR . 'internal/WebAdapter.php';
 $adapter = new WebAdapter($uri);
 
-
-
-
-
-exit;
-
 /*
 define('INCLUDE_DIR', getcwd() . DIRECTORY_SEPARATOR);
 require INCLUDE_DIR . 'core/setup.php';

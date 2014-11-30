@@ -25,9 +25,7 @@ class WebAdapter {
         $this->createLs();
         $this->createRouter();
         $this->route();
-        $this->createRequest();
-        $this->ls->setRequest($this->request);
-        $this->execute();
+        $this->handleRequest();
     }
     
     private function createLs() {
@@ -44,26 +42,122 @@ class WebAdapter {
         $this->segments = explode('/', $this->router->route($this->uri));
     }
     
-    private function createRequest() {
+    private function handleRequest() {
         $segmentsCount = count($this->segments);
         $applicationName = null;
+        $resourceUri = '';
         $actionName = null;
         $parameters = array();
-        $this->setRequestParameterNamesFromUri($applicationName, $actionName, $parameters, $segmentsCount);
+        $this->setRequestParameterNamesFromUri($applicationName, $actionName, $parameters, $resourceUri, $segmentsCount);
         
         try {
             $application = $this->getApplication($applicationName);
-            $action = $this->getAction($actionName, $application);
+            $resourceInfo = $this->getResource($resourceUri, $application);
             
-            if (count($parameters) === 0) {
-                $parameters = $application->getDefaultActionParameters();
+            if ($resourceInfo !== false) {
+                $this->handleResourceRequest($application, $resourceInfo);
+            } else {
+                $this->handleActionRequest($application, $actionName, $parameters);
             }
-            
-            $this->request = new Request($application, $action, $parameters);
         } catch (\Exception $e) {
             header("HTTP/1.0 404 Not Found");
             exit;
         }
+    }
+    
+    /**
+     * 
+     * @param \ls\internal\Application $application
+     * @param \ls\internal\ResourceInfo $resourceInfo
+     */
+    private function handleResourceRequest($application, $resourceInfo) {
+        if ($application->isResourceCachingEnabled()) {
+            $this->cacheResource($application, $resourceInfo);
+        }
+        
+        $this->echoResource($resourceInfo);
+    }
+    
+    /**
+     * 
+     * @param \ls\internal\Application $application
+     * @param \ls\internal\ResourceInfo $resourceInfo
+     */
+    private function cacheResource($application, $resourceInfo) {
+        $path = BASE_DIR . 'cache/resources/' . $application->getName() . '/' . $resourceInfo->getName();
+        
+        if (file_exists($path)) {
+            return;
+        }
+        
+        $dir = dirname($path);
+        
+        if (file_exists($dir) === false) {
+            mkdir($dir, 0777, true);
+        }
+        
+        if (symlink($resourceInfo->getPath(), $path) === false) {
+            copy($resourceInfo->getPath(), $path);
+        }
+    }
+
+    /**
+     * 
+     * @param \ls\internal\ResourceInfo $resourceInfo
+     */
+    private function echoResource($resourceInfo) {
+        $path = $resourceInfo->getPath();
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $ctype = finfo_file($finfo, $path);
+        finfo_close($finfo);
+        
+        if ($ctype === false) {
+            $ctype = 'text/plain';
+        }
+        
+        $lastModified = filemtime($path);
+        $etagFile = md5_file($path);
+        $ifModifiedSince = filter_input(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE');
+        $etagHeader = filter_input(INPUT_SERVER, 'HTTP_IF_NONE_MATCH');
+        $this->setResourceResponceHeaders($lastModified, $etagFile, $etagHeader, $ifModifiedSince, $ctype);
+        echo file_get_contents($path);
+        exit(0);
+    }
+    
+    
+    private function setResourceResponceHeaders($lastModified, $etagFile, $etagHeader, $ifModifiedSince, $ctype) {
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s", $lastModified) . " GMT");
+        header("Etag: $etagFile");
+        header('Cache-Control: public');
+
+        if (($ifModifiedSince !== false && strtotime($ifModifiedSince) == $lastModified) || $etagHeader == $etagFile) {
+            header("HTTP/1.1 304 Not Modified");
+            exit;
+        }
+        
+        header('Content-type: ' . $ctype);
+        header('Expires: ' . date('D, d M Y H:i:s', time() + (60 * 60 * 24 * 45)) . ' GMT');
+    }
+
+    private function handleActionRequest($application, $actionName, $parameters) {
+        $action = $this->getAction($actionName, $application);
+
+        if (count($parameters) === 0) {
+            $parameters = $application->getDefaultActionParameters();
+        }
+
+        $this->request = new Request($application, $action, $parameters);
+        $this->ls->setRequest($this->request);
+        $this->execute();
+    }
+    
+    /**
+     * 
+     * @param string $resourceUri
+     * @param \ls\internal\Application $application
+     */
+    private function getResource($resourceUri, $application) {
+        return $application->locateResource($resourceUri, 'webroot', '');
     }
     
     /**
@@ -73,7 +167,7 @@ class WebAdapter {
      * @param type $parameters
      * @param type $segmentsCount
      */
-    private function setRequestParameterNamesFromUri(&$applicationName, &$actionName, &$parameters, $segmentsCount) {
+    private function setRequestParameterNamesFromUri(&$applicationName, &$actionName, &$parameters, &$resourceUri, $segmentsCount) {
         for ($i = 0; $i < $segmentsCount; $i++) {
             switch ($i) {
                 case 0 :
@@ -81,11 +175,15 @@ class WebAdapter {
                     break;
                 case 1 :
                     $actionName = $this->segments[$i];
+                    $resourceUri .= '/' . $this->segments[$i];
                     break;
                 default :
                     $parameters[] = $this->segments[$i];
+                    $resourceUri .= '/' . $this->segments[$i];
             }
         }
+        
+        $resourceUri = trim($resourceUri, '/');
     }
     
     /**
@@ -103,18 +201,8 @@ class WebAdapter {
             }
         }
         
-        return $this->createApplciation($applicationName);
-    }
-    
-    /**
-     * 
-     * @param string $applicationName
-     * @return \ls\internal\Application
-     */
-    private function createApplciation($applicationName) {
         $application = new Application($applicationName, $this->ls);
         $application->loadConfigurationFile();
-        
         return $application;
     }
     
