@@ -24,6 +24,8 @@ class Application extends ResourceContainer {
     
     private $resourceCachingEnabled = false;
     
+    private $allowResourceSeeking = false;
+    
     /**
      * 
      * @param string $name
@@ -162,6 +164,14 @@ class Application extends ResourceContainer {
 
     public function setResourceCachingEnabled($resourceCachingEnabled) {
         $this->resourceCachingEnabled = $resourceCachingEnabled;
+    }
+    
+    public function isAllowResourceSeeking() {
+        return $this->allowResourceSeeking;
+    }
+
+    public function setAllowResourceSeeking($allowResourceSeeking) {
+        $this->allowResourceSeeking = $allowResourceSeeking;
     }
                 
     public function hasConfigurationFile() {

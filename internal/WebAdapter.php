@@ -75,7 +75,11 @@ class WebAdapter {
             $this->cacheResource($application, $resourceInfo);
         }
         
-        $this->echoResource($resourceInfo);
+        if ($application->isAllowResourceSeeking() === true) {
+            $this->seekResource($resourceInfo);
+        } else {
+            $this->echoResource($resourceInfo);
+        }
     }
     
     /**
@@ -107,6 +111,100 @@ class WebAdapter {
      */
     private function echoResource($resourceInfo) {
         $path = $resourceInfo->getPath();
+        $ctype = $this->getContentType($path);
+        $lastModified = filemtime($path);
+        $etagFile = md5_file($path);
+        $ifModifiedSince = filter_input(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE');
+        $etagHeader = filter_input(INPUT_SERVER, 'HTTP_IF_NONE_MATCH');
+        $this->setResourceResponceHeaders($lastModified, $etagFile, $etagHeader, $ifModifiedSince, $ctype);
+        $f = fopen($path, 'rb');
+        $chunkSize = 8192;
+        
+        while (!feof($f)) {
+            echo fread($f, $chunkSize);
+            flush();
+        }
+        
+        fclose($f);
+        exit(0);
+    }
+    
+    private function setResourceResponceHeaders($lastModified, $etagFile, $etagHeader, $ifModifiedSince, $ctype) {
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s", $lastModified) . " GMT");
+        header("Etag: $etagFile");
+        header('Cache-Control: public');
+        
+        if (($ifModifiedSince !== false && strtotime($ifModifiedSince) == $lastModified) || $etagHeader == $etagFile) {
+            header("HTTP/1.1 304 Not Modified");
+            exit;
+        }
+        
+        header('Content-type: ' . $ctype);
+        header('Expires: ' . date('D, d M Y H:i:s', time() + (60 * 60 * 24 * 45)) . ' GMT');
+    }
+    
+    /**
+     * 
+     * @param \ls\internal\ResourceInfo $resourceInfo
+     */
+    private function seekResource($resourceInfo) {
+        $range = filter_input(INPUT_SERVER, 'HTTP_RANGE');
+        
+        if ($range === null || $range === false) {
+            $this->echoResource($resourceInfo);
+            exit;
+        }
+        
+        $path = $resourceInfo->getPath();
+        $fileSize = filesize($path);
+        $ranges = $this->getRanges($range, $fileSize);
+        $ctype = $this->getContentType($path);
+        $this->setSeekResourceResponceHeaders($ctype, $ranges, $fileSize);
+        $this->echoSeekResource($path, $ranges);
+        exit;
+    }
+    
+    private function echoSeekResource($path, $ranges) {
+        $f = fopen($path, 'rb');
+        $chunkSize = 8192;
+        fseek($f, $ranges[0]);
+        
+        while (!feof($f)) {
+            if (ftell($f) >= $ranges[1]) {
+                break;
+            }
+
+            echo fread($f, $chunkSize);
+            flush();
+        }
+        
+        fclose($f);
+    }
+    
+    private function getRanges($range, $fileSize) {
+        $ranges = array_map('intval', explode('-', substr($range, 6)));
+        
+        if(!$ranges[1]) {
+            $ranges[1] = $fileSize - 1;
+        }
+        
+        return $ranges;
+    }
+    
+    private function setSeekResourceResponceHeaders($ctype, $ranges, $fileSize) {
+        header('Content-type: ' . $ctype);
+        header('HTTP/1.1 206 Partial Content');
+        header('Accept-Ranges: bytes');
+        header('Content-Length: ' . ($ranges[1] - $ranges[0]));
+        header(sprintf('Content-Range: bytes %d-%d/%d', $ranges[0], $ranges[1], $fileSize));
+    }
+    
+    /**
+     * 
+     * @param string $path
+     * @return string
+     */
+    private function getContentType($path) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $ctype = finfo_file($finfo, $path);
         finfo_close($finfo);
@@ -115,28 +213,7 @@ class WebAdapter {
             $ctype = 'text/plain';
         }
         
-        $lastModified = filemtime($path);
-        $etagFile = md5_file($path);
-        $ifModifiedSince = filter_input(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE');
-        $etagHeader = filter_input(INPUT_SERVER, 'HTTP_IF_NONE_MATCH');
-        $this->setResourceResponceHeaders($lastModified, $etagFile, $etagHeader, $ifModifiedSince, $ctype);
-        echo file_get_contents($path);
-        exit(0);
-    }
-    
-    
-    private function setResourceResponceHeaders($lastModified, $etagFile, $etagHeader, $ifModifiedSince, $ctype) {
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s", $lastModified) . " GMT");
-        header("Etag: $etagFile");
-        header('Cache-Control: public');
-
-        if (($ifModifiedSince !== false && strtotime($ifModifiedSince) == $lastModified) || $etagHeader == $etagFile) {
-            header("HTTP/1.1 304 Not Modified");
-            exit;
-        }
-        
-        header('Content-type: ' . $ctype);
-        header('Expires: ' . date('D, d M Y H:i:s', time() + (60 * 60 * 24 * 45)) . ' GMT');
+        return $ctype;
     }
 
     private function handleActionRequest($application, $actionName, $parameters) {
