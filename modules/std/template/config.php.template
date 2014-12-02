@@ -1,5 +1,6 @@
 <?php
 
-# Application configuration
+/* @var $this \ls\internal\Application */
+/* Application configuration */
 
 

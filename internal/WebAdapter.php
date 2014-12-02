@@ -197,8 +197,8 @@ class WebAdapter {
         header('Content-type: ' . $ctype);
         header('HTTP/1.1 206 Partial Content');
         header('Accept-Ranges: bytes');
-        header('Content-Length: ' . ($ranges[1] - $ranges[0]));
         header(sprintf('Content-Range: bytes %d-%d/%d', $ranges[0], $ranges[1], $fileSize));
+        header('Content-Length: ' . ($ranges[1] - $ranges[0] + 1));
     }
     
     /**
