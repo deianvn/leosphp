@@ -71,6 +71,8 @@ class WebAdapter {
      * @param \ls\internal\ResourceInfo $resourceInfo
      */
     private function handleResourceRequest($application, $resourceInfo) {
+        set_time_limit(0);
+        
         if ($application->isResourceCachingEnabled()) {
             $this->cacheResource($application, $resourceInfo);
         }
