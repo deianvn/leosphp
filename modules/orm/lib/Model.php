@@ -4,26 +4,66 @@ namespace ls\orm;
 
 abstract class Model {
     
-    public abstract function setFromArray($data);
+    private $attributes;
     
-    public abstract function setFromAssoc($data);
+    private $attributeDescriptors;
     
-    public abstract function toArray();
+    function __construct() {
+        $this->attributes = array();
+        $this->attributeDescriptors = array();
+        $this->init();
+    }
     
-    public abstract function toAssoc();
+    public static function manager() {
+        
+    }
     
-    public abstract function manager();
+    protected abstract function init();
     
-    public abstract function save();
+    public function registerAttribute($name) {
+        $attribureDesciptor = new AttributeDescriptor($name);
+        $this->attributeDescriptors[] = $attribureDesciptor;
+        return $attribureDesciptor;
+    }
     
-    protected abstract function attribute($name);
+    public function descriptors() {
+        return $this->attributeDescriptors;
+    }
+    
+    public function setFromArray($data) {
+        
+    }
+    
+    public function setFromAssoc($data) {
+        
+    }
+    
+    public function toArray() {
+        
+    }
+    
+    public function toAssoc() {
+        
+    }
+    
+    public function save() {
+        
+    }
+    
+    public function attributeGet($name) {
+        
+    }
+    
+    public function attributeSet($name, $value) {
+        
+    }
     
     public function attributeIsEmpty($name) {
-        return $this->attribute($name)->isEmpty();
+        return $this->attributeGet($name)->isEmpty();
     }
     
     public function attributeEmpty($name) {
-        $this->attribute($name)->setEmpty(true);
+        $this->attributeGet($name)->setEmpty(true);
     }
     
     public function attributeGetType($name) {

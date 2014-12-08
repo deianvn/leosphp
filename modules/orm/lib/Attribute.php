@@ -2,7 +2,8 @@
 
 namespace ls\model;
 
-class LSAttribute {    
+class LSAttribute {
+    
     private $value = null;
     private $type = null;
     private $changed = false;
